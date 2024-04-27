@@ -5,12 +5,12 @@ from wall import Wall
 import time
 
 screen = Screen()
-screen.setup(width=1000, height=600)
+screen.setup(width=1000, height=700)
 screen.bgcolor("black")
 screen.title("Breakout Game")
 # screen.tracer(0)
 
-paddle = Paddle((0, -270))
+paddle = Paddle((0, -320))
 ball = Ball()
 wall = Wall()
 
@@ -20,16 +20,27 @@ screen.onkeypress(paddle.move_left, "Left")
 
 game_on = True
 while game_on:
-    # screen.update()
+    screen.update()
     ball.move()
 
+    # Detect collision with left and right sides
     if ball.xcor() > 480 or ball.xcor() < -480:
         ball.bounce_x()
 
-    if ball.distance(paddle) < 50 or ball.ycor() > 270:
-        ball.bounce_y()
+    # Detect collision with wall
+    for row in wall.container_of_rows:
+        for one_wall in row:
+            for brick in one_wall:
+                if ball.distance(brick) < 35:
+                    ball.bounce_y()
 
-    if ball.ycor() < -270:
+
+    # Detect collision with top
+    # if ball.ycor() > 310:
+    #     ball.bounce_y()
+
+    # Detect collision with bottom
+    if ball.ycor() < -310:
         ball.reset()
 
 screen.exitonclick()

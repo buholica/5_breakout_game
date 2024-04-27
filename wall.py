@@ -1,46 +1,57 @@
 from turtle import Turtle
 
-STARTING_POSITIONS = [(-430, 100), (-300, 100), (-170, 100)]
 COLORS = ["purple", "blue", "green", "yellow", "orange", "red"]
-CONTAINER_WIDTH = 900
-CONTAINER_HEIGHT = 250
 
 
 class Wall(Turtle):
     def __init__(self):
         super().__init__()
-        self.walls = []
-        self.bricks_row = []
-        self.add_wall()
-        self.num_walls = len(COLORS)
+        self.container_of_rows = []
+        self.wall_length = 7
+        self.num_rows = 7
+        # self.num_walls_in_column = len(COLORS)
+        self.num_col = 2
+        self.create_row_container()
+
 
     def create_brick(self, x_cord, y_cord, color):
-        new_brick = Turtle("square")
-        new_brick.shapesize(1, 6)
-        new_brick.color(color)
-        new_brick.penup()
-        new_brick.speed("fastest")
-        new_brick.goto(x=x_cord, y=y_cord)
-        return new_brick
+        """Create a 1-1 brick for making a wall"""
+        brick = Turtle("square")
+        brick.shapesize(1, 1)
+        brick.color(color)
+        brick.penup()
+        brick.speed("fastest")
+        brick.goto(x=x_cord, y=y_cord)
+        return brick
 
-    def add_row(self, x_cord, y_cord, color):
-        row_bricks = []
-        for brick in range(7):
-            new_brick = self.create_brick(x_cord, y_cord, color)
-            row_bricks.append(new_brick)
-            x_cord += 140
-        return row_bricks
+    def create_wall(self, x_cord, y_cord, color):
+        """Create a wall made of certain amount of bricks"""
+        wall = []
+        for _ in range(self.wall_length):
+            brick = self.create_brick(x_cord, y_cord, color)
+            wall.append(brick)
+            x_cord += 17
+        # print(f"The length of wall list: {len(wall)}")
+        return wall
 
-    def add_wall(self):
-        x_cord = -425
-        y_cord = 90
-        color = 0
-        self.walls.append(self.add_row(x_cord, y_cord, COLORS[color]))
-        y_cord += 30
-        for row in range(1, 6):
-            x_cord = -425
-            color += 1
-            self.walls.append(self.add_row(x_cord, y_cord, COLORS[color]))
+    def create_row_container(self):
+        """Create a container that has certain amount of rows made of walls"""
+        x_cord = -455
+        y_cord = 100
+        color_index = 0
+        for wall in range(self.num_col):
+            row = []
+            for _ in range(self.num_rows):
+                wall = self.create_wall(x_cord, y_cord, COLORS[color_index])
+                row.append(wall)
+                x_cord += 135
+
+            self.container_of_rows.append(row)
+            x_cord = -455
             y_cord += 30
-        print(len(self.walls))
+            color_index += 1
+        # print(f"The length of the container list: {len(self.container_of_rows)}")
 
+    # def remove_wall(self):
+    #     for brick in self.wall:
+    #         self.wall.remove(brick)
