@@ -1,6 +1,7 @@
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
+from bricks import Bricks
 from wall import Wall
 from scoreboard import Scoreboard
 import time
@@ -13,7 +14,8 @@ screen.tracer(0)
 
 paddle = Paddle()
 ball = Ball()
-wall = Wall()
+# wall = Wall()
+bricks = Bricks()
 scoreboard = Scoreboard()
 screen.update()
 
@@ -33,7 +35,7 @@ def detect_collision_with_sides():
     global ball
     # Detect collision with bottom
     if ball.ycor() < -310:
-        ball.bounce_y()
+        ball.reset()
 
     # Detect collision with left and right sides
     if ball.xcor() > 480 or ball.xcor() < -480:
@@ -42,6 +44,15 @@ def detect_collision_with_sides():
     # Detect collision with top
     if ball.ycor() > 310:
         ball.bounce_y()
+
+
+def detect_collision_with_bricks(row_bricks, y_cor):
+    for color, brick_list in row_bricks.items():
+        for brick in brick_list:
+            if ball.ycor() > y_cor and ball.distance(brick) < 50:
+                ball.bounce_y()
+                brick.hideturtle()
+                brick_list.remove(brick)
 
 
 game_on = True
@@ -55,6 +66,14 @@ while game_on:
 
     # Detect collision with sides
     detect_collision_with_sides()
+
+    # Detect collision with walls
+    detect_collision_with_bricks(bricks.bricks, 40)
+    detect_collision_with_bricks(bricks.bricks, 70)
+    detect_collision_with_bricks(bricks.bricks, 100)
+    detect_collision_with_bricks(bricks.bricks, 130)
+    detect_collision_with_bricks(bricks.bricks, 160)
+    detect_collision_with_bricks(bricks.bricks, 190)
 
 
 screen.exitonclick()
