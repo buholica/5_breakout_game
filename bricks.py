@@ -12,12 +12,6 @@ class Brick(Turtle):
         self.shapesize(stretch_wid=1.5, stretch_len=6)
         self.goto(x_cor, y_cor)
 
-        # Defining the borders of the brick
-        self.right_wall = self.xcor() + 100
-        self.left_wall = self.xcor() - 100
-        self.top_wall = self.ycor() + 100
-        self.bottom_wall = self.ycor() - 100
-
 
 class Bricks:
     def __init__(self):
@@ -41,4 +35,4 @@ class Bricks:
             self.bricks[color] = self.create_row(x_cord, y_cord, color)
             y_cord += 40
             color_index += 1
-        print(self.bricks)
+            print(f"The length of {color} list is {len(self.bricks[color])}.")

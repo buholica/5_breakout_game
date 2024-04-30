@@ -3,7 +3,7 @@ from turtle import Turtle
 Y_COR = -310
 STARTING_POSITIONS = [(-60, Y_COR), (-40, Y_COR), (-20, Y_COR),
                       (0, Y_COR), (20, Y_COR), (40, Y_COR), (60, Y_COR)]
-MOVE_DISTANCE = 30
+MOVE_DISTANCE = 40
 
 class Paddle(Turtle):
     def __init__(self):

@@ -2,8 +2,9 @@ from turtle import Screen
 from paddle import Paddle
 from ball import Ball
 from bricks import Bricks
-from wall import Wall
 from scoreboard import Scoreboard
+from lives import LivesBoard
+from message import Message
 import time
 
 screen = Screen()
@@ -14,9 +15,11 @@ screen.tracer(0)
 
 paddle = Paddle()
 ball = Ball()
-# wall = Wall()
 bricks = Bricks()
+rows_of_bricks = bricks.bricks
 scoreboard = Scoreboard()
+lives_board = LivesBoard()
+message = Message()
 screen.update()
 
 screen.listen()
@@ -35,6 +38,7 @@ def detect_collision_with_sides():
     global ball
     # Detect collision with bottom
     if ball.ycor() < -310:
+        lives_board.update_lives()
         ball.reset()
 
     # Detect collision with left and right sides
@@ -46,13 +50,31 @@ def detect_collision_with_sides():
         ball.bounce_y()
 
 
-def detect_collision_with_bricks(row_bricks, y_cor):
-    for color, brick_list in row_bricks.items():
+def detect_collision_with_bricks():
+    y_cor = 0
+    point = 0
+    for color, brick_list in rows_of_bricks.items():
+        if color == "purple":
+            y_cor, point = 40, 1
+        elif color == "blue":
+            y_cor, point = 80, 2
+        elif color == "green":
+            y_cor, point = 120, 3
+        elif color == "yellow":
+            y_cor, point = 160, 4
+        elif color == "orange":
+            y_cor, point = 200, 5
+        elif color == "red":
+            y_cor, point = 240, 6
+
         for brick in brick_list:
             if ball.ycor() > y_cor and ball.distance(brick) < 50:
                 ball.bounce_y()
                 brick.hideturtle()
                 brick_list.remove(brick)
+                scoreboard.update_score(point)
+
+        print(f"The {color}_list has {len(brick_list)} values inside.")
 
 
 game_on = True
@@ -68,12 +90,17 @@ while game_on:
     detect_collision_with_sides()
 
     # Detect collision with walls
-    detect_collision_with_bricks(bricks.bricks, 40)
-    detect_collision_with_bricks(bricks.bricks, 70)
-    detect_collision_with_bricks(bricks.bricks, 100)
-    detect_collision_with_bricks(bricks.bricks, 130)
-    detect_collision_with_bricks(bricks.bricks, 160)
-    detect_collision_with_bricks(bricks.bricks, 190)
+    detect_collision_with_bricks()
+
+    # Finish the game
+    if lives_board.lives == 0 and scoreboard.score < 147:
+        game_on = False
+        message.update_message("Sorry, you lose!")
+
+    if scoreboard.score >= 147 and lives_board.lives > 0:
+        game_on = False
+        message.update_message("Congratulations! You won the game!")
+
 
 
 screen.exitonclick()
