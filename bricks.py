@@ -35,4 +35,4 @@ class Bricks:
             self.bricks[color] = self.create_row(x_cord, y_cord, color)
             y_cord += 40
             color_index += 1
-            print(f"The length of {color} list is {len(self.bricks[color])}.")
+            # print(f"The length of {color} list is {len(self.bricks[color])}.")

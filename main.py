@@ -46,7 +46,7 @@ def detect_collision_with_sides():
         ball.bounce_x()
 
     # Detect collision with top
-    if ball.ycor() > 310:
+    if ball.ycor() > 290:
         ball.bounce_y()
 
 
@@ -77,7 +77,12 @@ def detect_collision_with_bricks():
         print(f"The {color}_list has {len(brick_list)} values inside.")
 
 
-game_on = True
+game_on = False
+start_game = screen.textinput(title="Start to play", prompt='Type "start" to start the game.')
+
+if start_game == "start".lower():
+    game_on = True
+
 while game_on:
     screen.update()
     time.sleep(0.01)
@@ -95,12 +100,13 @@ while game_on:
     # Finish the game
     if lives_board.lives == 0 and scoreboard.score < 147:
         game_on = False
+        scoreboard.reset()
         message.update_message("Sorry, you lose!")
 
     if scoreboard.score >= 147 and lives_board.lives > 0:
         game_on = False
+        scoreboard.reset()
         message.update_message("Congratulations! You won the game!")
-
 
 
 screen.exitonclick()

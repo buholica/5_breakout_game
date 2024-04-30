@@ -5,6 +5,7 @@ STARTING_POSITIONS = [(-60, Y_COR), (-40, Y_COR), (-20, Y_COR),
                       (0, Y_COR), (20, Y_COR), (40, Y_COR), (60, Y_COR)]
 MOVE_DISTANCE = 40
 
+
 class Paddle(Turtle):
     def __init__(self):
         super().__init__()
@@ -26,9 +27,11 @@ class Paddle(Turtle):
             self.segments.append(new_part)
 
     def move_right(self):
-        for segment in self.segments:
-            segment.forward(MOVE_DISTANCE)
+        if self.segments[-1].xcor() + MOVE_DISTANCE <= 480:
+            for segment in self.segments:
+                segment.forward(MOVE_DISTANCE)
 
     def move_left(self):
-        for segment in self.segments:
-            segment.backward(MOVE_DISTANCE)
+        if self.segments[0].xcor() + MOVE_DISTANCE >= -450:
+            for segment in self.segments:
+                segment.backward(MOVE_DISTANCE)
