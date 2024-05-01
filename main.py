@@ -22,10 +22,6 @@ lives_board = LivesBoard()
 message = Message()
 screen.update()
 
-screen.listen()
-screen.onkeypress(paddle.move_right, "Right")
-screen.onkeypress(paddle.move_left, "Left")
-
 
 def detect_collision_with_paddle():
     global ball, paddle
@@ -80,13 +76,17 @@ def detect_collision_with_bricks():
 game_on = False
 start_game = screen.textinput(title="Start to play", prompt='Type "start" to start the game.')
 
-if start_game == "start".lower():
+if start_game.lower() == "start":
     game_on = True
 
 while game_on:
     screen.update()
     time.sleep(0.01)
     ball.move()
+
+    screen.listen()
+    screen.onkeypress(paddle.move_right, "Right")
+    screen.onkeypress(paddle.move_left, "Left")
 
     # Detect collision with paddle
     detect_collision_with_paddle()

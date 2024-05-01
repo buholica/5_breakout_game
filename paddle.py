@@ -27,7 +27,7 @@ class Paddle(Turtle):
             self.segments.append(new_part)
 
     def move_right(self):
-        if self.segments[-1].xcor() + MOVE_DISTANCE <= 480:
+        if self.segments[-1].xcor() + MOVE_DISTANCE <= 450:
             for segment in self.segments:
                 segment.forward(MOVE_DISTANCE)
 
